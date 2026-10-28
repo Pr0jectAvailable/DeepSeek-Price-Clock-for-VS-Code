@@ -1,0 +1,60 @@
+{
+  "name": "deepseek-price-clock",
+  "displayName": "DeepSeek Price Clock",
+  "description": "Статус-бар и панель с таймлайном: пик или off-peak (полцены) у DeepSeek API прямо сейчас.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "deepseekPriceClock.openPanel",
+        "title": "DeepSeek Price Clock: Открыть панель"
+      },
+      {
+        "command": "deepseekPriceClock.toggleTimeZone",
+        "title": "DeepSeek Price Clock: Переключить локальное время / UTC"
+      }
+    ],
+    "configuration": {
+      "title": "DeepSeek Price Clock",
+      "properties": {
+        "deepseekPriceClock.timeZone": {
+          "type": "string",
+          "enum": ["local", "utc"],
+          "default": "local",
+          "description": "В каком часовом поясе показывать время смены окон."
+        },
+        "deepseekPriceClock.notifyOnChange": {
+          "type": "boolean",
+          "default": false,
+          "description": "Показывать уведомление, когда цена меняется между пиком и off-peak."
+        },
+        "deepseekPriceClock.showCountdownInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Показывать в статус-баре обратный отсчёт до смены окна."
+        },
+        "deepseekPriceClock.extraOffPeakDates": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "default": [],
+          "description": "Дополнительные даты (YYYY-MM-DD по пекинскому календарю), которые целиком off-peak: например, китайские праздники следующего года."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node test/price.test.js && node test/compare.test.js",
+    "package": "vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.0.0"
+  }
+}
